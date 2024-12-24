@@ -1,11 +1,14 @@
 <?php
- 
+
+use App\Http\Controllers\ProductController; 
 use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
- 
+
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -14,7 +17,21 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+Route::get('/greeting', function () {
+    return 'Hello World';
+});
  
+Route::get('/user', [UserController::class, 'index']);
+
+//Route::get('/user/{id}', function (string $id) {
+//    return 'User '.$id;
+//});
+//Route::get('/user/{user}', [UserController::class, 'show']);
+
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/{id}', [ProductController::class, 'show']);
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -28,5 +45,13 @@ Route::middleware('auth')->group(function () {
 Route::resource('chirps', ChirpController::class)
     ->only(['index', 'store', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
+
+Route::resource('products', ChirpController::class)
+    ->only(['index', 'store'])
+    ->middleware(['auth', 'verified']);
+
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+
+Route::get('/products/{id}', [ProductController::class, 'show']);
  
 require __DIR__.'/auth.php';

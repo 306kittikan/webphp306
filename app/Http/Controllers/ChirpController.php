@@ -21,6 +21,7 @@ class ChirpController extends Controller
    //ตัวอย่างการใช้งานในเว็บ:
 //หน้า Home หรือหน้าฟีดแสดงโพสต์ทั้งหมด
 
+
     public function index(): Response 
     {
         //
